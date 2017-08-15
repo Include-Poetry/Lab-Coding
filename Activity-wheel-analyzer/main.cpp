@@ -1,6 +1,6 @@
-/*	Programa auxiliar en el an√°lisis del conteo de vueltas en ruedas
-	Especialmente programado para la estudiante de maestr√≠a Teresa Belem
-	Programado por Ricardo Vel√°zquez Contreras el 10/06/2017
+/*	Programa auxiliar en el an·lisis del conteo de vueltas en ruedas
+	Especialmente programado para la estudiante de maestrÌa Teresa Belem
+	Programado por Ricardo Vel·zquez Contreras
 	www.include-poetry.com/Equipo/rivel_co/
 */
 #include <iostream>
@@ -12,20 +12,21 @@
 #include <string>
 using namespace std;
 
-// Matriz para meter las capturas, funcionar√° hasta antes del a√±o 2050
+// Matriz para meter las capturas, funcionar· hasta antes del aÒo 2050
 long long int captura[50][13][32][24];
-// 1 - A√±o del 2000
+// 1 - AÒo del 2000
 // 2 - Mes
-// 3 - D√≠a
+// 3 - DÌa
 // 3 - Horas en reloj de 24 hrs
 
 // Se guardan las fechas en periodo o individuales en las que hubo actividad
 string DiasConvertidos[500];
-// Variable que marca la hora 0 en la conversi√≥n
+int VueltasDia[500];
+// Variable que marca la hora 0 en la conversiÛn
 int HoraCero;
 
 long long int convertidos[500][24];
-// 1 - Dia para el rat√≥n
+// 1 - Dia para el ratÛn
 // 2 - Hora de su dia segun su 0
 
 // Arreglo para cuando se ingresan carpetas desordenadas
@@ -39,15 +40,15 @@ int RatonesCant;
 
 // Fechas iniciales y finales para optimizar
 int DiaF, MesF, AnoF, DiaI, MesI, AnoI;
-// Correcci√≥n de tiempo para horas
+// CorrecciÛn de tiempo para horas
 int correct;
 
 // Control de las carpetas para periodo y la carpeta actual
 string CarpetaIni, CarpetaFin, CarpetaAct;
 
-// D√≠as totales en conversi√≥n
+// DÌas totales en conversiÛn
 int totales;
-// Rat√≥n y rueda proces√°ndose
+// RatÛn y rueda proces·ndose
 string RatonPro, RuedaPro;
 
 void Inicializar(){		// Reseteamos los arreglos que guardan las actividades
@@ -65,22 +66,58 @@ void Inicializar(){		// Reseteamos los arreglos que guardan las actividades
 			}
 		}
 	}
+	for (int i=0; i<500; i++){
+		VueltasDia[i] = 0;
+	}
 	DiasConvertidos[0] = "";
 	return;
 }
 
-string Formato(int x, int n){	// Para dar formato a los N√∫meros tipo reloj
+string Formato(int x, int n){	// Para dar formato a los N˙meros tipo reloj
 	stringstream ss;
 	ss << setw(n) << setfill('0') << x;
 	string s = ss.str();
 	return s;
 }
 
-void Captura(string FileName){	// Funci√≥n quue captura los datos desde la ruta FileName
+string SiguienteCarpeta(){		// DeterminaciÛn de siguiente fecha a partir de CarpetaAct
+	string aux;		// Cadena auxiliar de formaciÛn
+	int cambio;		// Para el control de duraciÛn de mes + 1
+	
+	aux = CarpetaAct.substr(0, 2);		// ExtracciÛn del dÌa de CarpetaAct
+	int dia = stoi(aux);
+	aux = CarpetaAct.substr(2, 2);		// ExtracciÛn del mes de CarpetaAct
+	int mes = stoi(aux);
+	aux = CarpetaAct.substr(4, 4);		// ExtracciÛn del aÒo de CarpetaAct
+	int ano = stoi(aux);
+	
+	string final;	// Variable que tendr· el valor final
+
+	// DeterminaciÛn del cambio seg˙n la duraciÛn de cada mes + 1
+	if (mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12){
+		cambio = 32;
+	} else if (mes == 2){
+		if (ano%4 == 0) cambio = 30;
+		else cambio = 29;
+	} else cambio = 31;
+
+	ano += ( mes + ((dia+1)/cambio) )/13;	// DeterminaciÛn del nuevo aÒo
+	mes = ( mes + ((dia+1)/cambio) )%13;	// DeterminaciÛn del nuevo mes
+	dia = (dia+1)%cambio;					// DeterminaciÛn del nuevo dÌa
+	if (!dia) dia++;	// CorrecciÛn de dÌa 0
+	if (!mes) mes++;	// CorrecciÛn de mes 0
+
+	// Formamos la cadena final
+	final = Formato(dia,2) + Formato(mes,2) + Formato(ano, 4);
+	CarpetaAct = final;	// Actualizamos la carpeta actual
+	return final;	// Devolvemos la nueva carpeta
+}
+
+void Captura(string FileName){	// FunciÛn que captura los datos desde la ruta FileName
 	// Limpiamos la pantalla
 	system("cls");
 
-	// Se√±alizaci√≥n para el usuario
+	// SeÒalizaciÛn para el usuario
 	cout << "     ------------------- Convertidor de conteos -------------------" << endl
 		 << endl
 		 << "     Carpeta a procesar: " << CarpetaAct << endl
@@ -92,7 +129,7 @@ void Captura(string FileName){	// Funci√≥n quue captura los datos desde la ruta 
 	ifstream archivo;
 	archivo.open(FileName);
 
-	// Leemos las primeras cuatro l√≠neas que no sirven
+	// Leemos las primeras cuatro lÌneas que no sirven
 	string temp;
 	for (int i=0; i<4; i++){
 		archivo >> temp;
@@ -143,7 +180,7 @@ void Captura(string FileName){	// Funci√≥n quue captura los datos desde la ruta 
 				}
 			}
 		}
-		if (ano > AnoF){		// Evaluamos la √∫ltima fecha
+		if (ano > AnoF){		// Evaluamos la ˙ltima fecha
 			AnoF = ano;
 			MesF = mes;
 			DiaF = dia;
@@ -165,45 +202,71 @@ void Captura(string FileName){	// Funci√≥n quue captura los datos desde la ruta 
 	return;
 }
 
-void Conversion(bool todo){		// Convertimos los datos de la captura en la hora del rat√≥n
-	int dia = 1;		// Posici√≥n del arreglo donde comenzamos a guardar la actividad
-	int hora;			// Las horas para el arreglo de convertidos
-	int i, j, k, l;		// Los contadores de los ciclos
-	bool cambio;		// Eval√∫a si existen cambios en actividad
+void Conversion(bool todo){		// Convertimos los datos de la captura en la hora del ratÛn
+	int dia = 1;			// PosiciÛn del arreglo donde comenzamos a guardar la actividad
+	int hora;				// Las horas para el arreglo de convertidos
+	int NowD, NowM, NowY;	// Indicadores de fecha proces·ndose
+	bool cambio;			// Eval˙a si existen cambios en actividad
+	bool sigue;				// Control para el ciclo
+	string SigFecha, aux,	// Control de siguiente fecha y un auxiliar de cadenas
+		   Respaldo = CarpetaAct;	// Ya que modificaremos CarpetaAct varias veces
 
-	HoraCero = 8;		// Determinaci√≥n de la hora 0 a convertir
+	HoraCero = 8;		// DeterminaciÛn de la hora 0 a convertir
 
-	for (i=AnoI; i <= AnoF; i++){	// Control de los a√±os
-		for (j = MesI; j <= MesF; j++){		// Control de los meses
-			for (k = DiaI; k <= DiaF; k++){		// Control de los d√≠as
-				if (!todo) cambio = false;		// Evaluaci√≥n de cambio
+	NowD = DiaI, NowM = MesI, NowY = AnoF;	// Valor inicial de fecha a procesar
 
-				// Guardamos las fechas en que se eval√∫o la actividad
-				DiasConvertidos[dia-1] += " " + Formato(k, 2) + '-' + Formato(j, 2) + '-' + Formato(i, 2);
-				DiasConvertidos[dia] = Formato(k, 2) + '-' + Formato(j, 2) + '-' + Formato(i, 2);
+	sigue = true;
+	while (sigue){
+		sigue = NowD != DiaF || NowM != MesF || NowY != AnoF;
 
-				// Determinaci√≥n de actividad en la primera mitad del d√≠a
-				for (l = 0, hora = 16; l < HoraCero; l++, hora++){
-					convertidos[dia][hora] = captura[i][j][k][l];
-					if (!todo && captura[i][j][k][l]) cambio = true;	// Determinaci√≥n de cambios
-				}
+		if (!todo) cambio = false;		// EvaluaciÛn de cambio
 
-				if (!todo){		// PAra determinaci√≥n de cambios
-					if (cambio) dia++;
-				} else dia++;	// Cambiamos de d√≠a a guardar conversi√≥n
+		// Guardamos las fechas en que se eval˙o la actividad
+		DiasConvertidos[dia-1] += " " + Formato(NowD, 2) + '-' + Formato(NowM, 2) + '-' + Formato(NowY, 2);
+		DiasConvertidos[dia] = Formato(NowD, 2) + '-' + Formato(NowM, 2) + '-' + Formato(NowY, 2);
 
-				// Determinaci√≥n de actividad en la segunda mitad del d√≠a
-				for (l = HoraCero, hora = 0; l < 24; l++, hora++){
-					convertidos[dia][hora] = captura[i][j][k][l];
-				}
-			}
+		// DeterminaciÛn de actividad en la primera mitad del dÌa
+		for (int l = 0, hora = 16; l < HoraCero; l++, hora++){
+			convertidos[dia][hora] = captura[NowY][NowM][NowD][l];
+			VueltasDia[dia] += captura[NowY][NowM][NowD][l];	// Guardamos para el contador
+			if (!todo && captura[NowY][NowM][NowD][l]) cambio = true;	// DeterminaciÛn de cambios
 		}
+
+		if (!todo){		// Para determinaciÛn de cambios
+			if (cambio) dia++;
+		} else dia++;	// Cambiamos de dÌa a guardar conversiÛn
+
+		// DeterminaciÛn de actividad en la segunda mitad del dÌa
+		for (int l = HoraCero, hora = 0; l < 24; l++, hora++){
+			convertidos[dia][hora] = captura[NowY][NowM][NowD][l];
+			VueltasDia[dia] += captura[NowY][NowM][NowD][l];	// Guardamos para el contador
+		}
+
+		// Calculamos la siguiente fecha que debe ser procesada
+		NowY += 2000;
+		CarpetaAct = Formato(NowD, 2) + Formato(NowM, 2) + Formato(NowY, 4);
+		SigFecha = SiguienteCarpeta();
+		aux = SigFecha.substr(0, 2);		// ExtracciÛn del dÌa de SigFecha
+		NowD = stoi(aux);
+		aux = SigFecha.substr(2, 2);		// ExtracciÛn del mes de SigFecha
+		NowM = stoi(aux);
+		aux = SigFecha.substr(6, 2);		// ExtracciÛn del aÒo de SigFecha
+		NowY = stoi(aux);
 	}
-	totales = dia;		// La cantidad total de d√≠as ser√° la cantidad de cambios de d√≠a
+	
+	CarpetaAct = Respaldo;	// Restauramos el valor de CarpetaAct
+	totales = dia;			// La cantidad total de dÌas ser· la cantidad de cambios de dÌa
+
+	return;
 }
 
 void GuardarConteos(string carpeta){	// Guardamos los conteos
-	// Creaci√≥n de archivo y definici√≥n de ruta
+	int NowD, NowM, NowY;	// Controles de fecha proces·ndose
+	bool sigue;				// Control del ciclo
+	string aux, SigFecha,	// Auxiliar de cadena y temporal de siguiente fecha
+		   resp = CarpetaAct;	// Respaldo del valor de CarpetaAct
+	NowD = DiaI, NowM = MesI, NowY = AnoF;	// Valor inicial de fecha a procesar
+	// CreaciÛn de archivo y definiciÛn de ruta
 	ofstream salida;
 	string ruta = "Convertidos";
 	CreateDirectory(ruta.c_str(), NULL);
@@ -217,55 +280,37 @@ void GuardarConteos(string carpeta){	// Guardamos los conteos
 	salida.open(ruta);
 	// Mensaje al usuario
 	salida << "Datos de conteo con horario normal (civil)" << endl
-		   << "Rat√≥n " << RatonPro << " - Rueda " << RuedaPro << endl
-		   << endl;
-	
-	for (int i=AnoI; i <= AnoF; i++){	// Control del a√±o
-		for (int j = MesI; j <= MesF; j++){		// Control del mes
-			for (int k = DiaI; k <= DiaF; k++){		// Control del d√≠a
-				// Mensaje al usuario
-				salida << "A√±o " << i << " mes " << j << " d√≠a " << k << endl;
-				for (int l = 0; l < 24; l++){	// Control de horas
-					salida << "Hora " << l << " vueltas " << captura[i][j][k][l] << endl;
-				}
-				salida << endl;
-			}
-		}
-	}
-	// Cerramos el archivo
-	salida.close();
-	return;
-}
+		   << "RatÛn " << RatonPro << " - Rueda " << RuedaPro << endl
+		   << endl;	
 
-void MostarConteos(){		// Mostramos los conteos
-	// Limpiamos la pantalla
-	system("cls");
-	// Mensaje al usuario
-	cout << "     ------------------- Convertidor de conteos -------------------" << endl
-		 << endl
-		 << "     Datos de conteo con horario normal (civil)" << endl
-		 << "     Rat√≥n " << RatonPro << " - Rueda " << RuedaPro << endl
-		 << endl;
+	sigue = true;
+	while (sigue){	// Iteramos en todas las fechas
+		sigue = NowD != DiaF || NowM != MesF || NowY != AnoF;
 
-	for (int i=AnoI; i <= AnoF; i++){	// Control del a√±o
-		for (int j = MesI; j <= MesF; j++){		// Control del mes
-			for (int k = DiaI; k <= DiaF; k++){		// Control del d√≠a
-				cout << "     A\244o " << i << " mes " << j << " d\241a " << k << endl;
-				for (int l = 0; l < 24; l++){	// Control de las horas
-					cout << "     Hora " << l << " vueltas " << captura[i][j][k][l] << endl;
-				}
-				cout << endl;
-			}
+		salida << "AÒo " << NowY << " mes " << NowM << " dÌa " << NowD << endl;
+		for (int l = 0; l < 24; l++){	// Control de horas
+			salida << "Hora " << l << " vueltas " << captura[NowY][NowM][NowD][l] << endl;
 		}
+		salida << endl;
+
+		NowY += 2000;	// Calibramos para el correcto funcionamiento de SiguienteCarpeta()
+		CarpetaAct = Formato(NowD, 2) + Formato(NowM, 2) + Formato(NowY, 4);
+		SigFecha = SiguienteCarpeta();		// Calculamos la siguiente fecha como cadena
+		// Evaluamos como enteros y reasignamos
+		aux = SigFecha.substr(0, 2);		// ExtracciÛn del dÌa de SigFecha
+		NowD = stoi(aux);
+		aux = SigFecha.substr(2, 2);		// ExtracciÛn del mes de SigFecha
+		NowM = stoi(aux);
+		aux = SigFecha.substr(6, 2);		// ExtracciÛn del aÒo de SigFecha
+		NowY = stoi(aux);
 	}
-	// Mensaje al usuario por la pausa
-	cout << "     Presiona cualquier tecla para continuar...";
-	system("pause>>null");
+	CarpetaAct = resp;	// Restauramos el valor de CarpetaAct
+	salida.close();	// Cerramos el archivo
 	return;
 }
 
 void GuardarConvertidos(string carpeta){	// Guardamos los convertidos con carpeta de fecha 'carpeta'
-	// Definici√≥n de salida y de ruta
+	// DefiniciÛn de salida y de ruta
 	ofstream salida;
 	string ruta = "Convertidos";
 	CreateDirectory(ruta.c_str(), NULL);
@@ -277,17 +322,18 @@ void GuardarConvertidos(string carpeta){	// Guardamos los convertidos con carpet
 	// Abrimos el archivo
 	salida.open(ruta);
 	// Mensaje al usuario
-	salida << "Datos de conteo tras conversi√≥n de hora civil 08:00 -> 00:00 rat√≥n" << endl
-		   << "Rat√≥n " << RatonPro << " - Rueda " << RuedaPro << endl
+	salida << "Datos de conteo tras conversiÛn de hora civil 08:00 -> 00:00 ratÛn" << endl
+		   << "RatÛn " << RatonPro << " - Rueda " << RuedaPro << endl
 		   << endl;
 
-	for (int i=1; i<=totales; i++){	// Control de los d√≠as de actividad
+	for (int i=1; i<=totales; i++){	// Control de los dÌas de actividad
 		// Mensaje al usuario
-		salida << "En los d√≠as: " << DiasConvertidos[i-1] << endl
+		salida << "En los dÌas: " << DiasConvertidos[i-1] << endl
 			   << "Hora | Vueltas" << endl;
 		for (int j=0; j<24; j++){	// Control de las horas
 			salida << j << " " << convertidos[i][j] << endl;
 		}
+		salida << "Vueltas totales en el dÌa: " << VueltasDia[i] << endl;
 		salida << endl;
 	}
 	// Se cierra el archivo
@@ -302,16 +348,17 @@ void MostrarConvertidos(){	// Mostramos los convertidos en la consola
 	cout << "     ------------------- Convertidor de conteos -------------------" << endl
 		 << endl
 		 << "     Datos de conteo tras conversi\242n" << endl
-		 << "     Raton " << RatonPro << " - Rueda " << RuedaPro << endl
+		 << "     Rat\242n " << RatonPro << " - Rueda " << RuedaPro << endl
 		 << endl;
 
-	for (int i=1; i<=totales; i++){		// Control de d√≠as de actividad
+	for (int i=1; i<=totales; i++){		// Control de dÌas de actividad
 		// Mensaje al usuario con fecha o periodo que se registro
 		cout << "     En los d\241as: " << DiasConvertidos[i-1] << endl;
 		for (int j=0; j<24; j++){		// Control de horas
 			cout << "     Hora " << j << " vueltas " << convertidos[i][j] << endl;
 		}
-		cout << endl;
+		cout << "     Vueltas totales en el d\241a: " << VueltasDia[i] << endl
+			 << endl;
 	}
 	// Mensaje al usuario por pausa
 	cout << "     Presiona cualquier tecla para continuar...";
@@ -319,46 +366,13 @@ void MostrarConvertidos(){	// Mostramos los convertidos en la consola
 	return;
 }
 
-string SiguienteCarpeta(){		// Determinaci√≥n de siguiente fecha a partir de CarpetaAct
-	string aux;		// Cadena auxiliar de formaci√≥n
-	int cambio;		// Para el control de duraci√≥n de mes + 1
-	
-	aux = CarpetaAct.substr(0, 2);		// Extracci√≥n del d√≠a de CarpetaAct
-	int dia = stoi(aux);
-	aux = CarpetaAct.substr(2, 2);		// Extracci√≥n del mes de CarpetaAct
-	int mes = stoi(aux);
-	aux = CarpetaAct.substr(4, 4);		// Extracci√≥n del a√±o de CarpetaAct
-	int ano = stoi(aux);
-	
-	string final;	// Variable que tendr√° el valor final
-
-	// Determinaci√≥n del cambio seg√∫n la duraci√≥n de cada mes + 1
-	if (mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12){
-		cambio = 32;
-	} else if (mes == 2){
-		if (ano%4 == 0) cambio = 30;
-		else cambio = 29;
-	} else cambio = 31;
-
-	ano += ( mes + ((dia+1)/cambio) )/13;	// Determinaci√≥n del nuevo a√±o
-	mes = ( mes + ((dia+1)/cambio) )%13;	// Determinaci√≥n del nuevo mes
-	dia = (dia+1)%cambio;					// Determinaci√≥n del nuevo d√≠a
-	if (!dia) dia++;	// Correcci√≥n de d√≠a 0
-	if (!mes) mes++;	// Correcci√≥n de mes 0
-
-	// Formamos la cadena final
-	final = Formato(dia,2) + Formato(mes,2) + Formato(ano, 4);
-	CarpetaAct = final;	// Actualizamos la carpeta actual
-	return final;	// Devolvemos la nueva carpeta
-}
-
-void TipoCaptura(int vez){		// Definimos el tipo de captura seg√∫n el par√°metro 'vez'
+void TipoCaptura(int vez){		// Definimos el tipo de captura seg˙n el par·metro 'vez'
 	string FileName, Destino;	// Variables de control
 	bool continua = true;		// Variable de control para carpetas ordenadas
 	char opc;	// Variable para pedir opciones S/N
 	switch(vez){
 		case 1:		// Varias carpetas ordenadas
-			// Se ingresan todos los datos asociados al an√°lisis
+			// Se ingresan todos los datos asociados al an·lisis
 			cout << "     Nombre de carpeta de inicio: ";
 			cin >> CarpetaIni;
 			cout << "     Nombre de carpeta de fin: ";
@@ -371,23 +385,23 @@ void TipoCaptura(int vez){		// Definimos el tipo de captura seg√∫n el par√°metro
 				cout << "     N\243mero de rueda (" << i+1  << "/" << RatonesCant << ") a procesar: ";
 				cin >> Ruedas[i];
 			}
-			// Por cada rat√≥n se exploran todas las carpetas para usar una sola matriz de captura
+			// Por cada ratÛn se exploran todas las carpetas para usar una sola matriz de captura
 			for (int j=0; j<RatonesCant; j++){
-				CarpetaAct = CarpetaIni;	// Le primer carpeta ser√° la inicial
-				DiaF = MesF = AnoF = 0;		// Se neutralizan los valores que ser√°n m√°ximos
-				DiaI = MesI = AnoI = 5000;	// Se neutralizan los valores que ser√°n m√≠nimos
-				continua = true;	// Regulaci√≥n del ciclo 
-				RatonPro = Ratones[j];	// Actualizamos el rat√≥n que estamos analizando
+				CarpetaAct = CarpetaIni;	// Le primer carpeta ser· la inicial
+				DiaF = MesF = AnoF = 0;		// Se neutralizan los valores que ser·n m·ximos
+				DiaI = MesI = AnoI = 5000;	// Se neutralizan los valores que ser·n mÌnimos
+				continua = true;	// RegulaciÛn del ciclo 
+				RatonPro = Ratones[j];	// Actualizamos el ratÛn que estamos analizando
 				RuedaPro = Ruedas[j];	// Actualizamos la rueda que estamos analizando
 				while (continua){
-					// Si la carpeta actual es igual a la final entonces ser√° la √∫ltima por procesar
+					// Si la carpeta actual es igual a la final entonces ser· la ˙ltima por procesar
 					if (CarpetaAct == CarpetaFin) continua = false;
 					// Creamos el nombre del archivo a capturar
 					FileName = CarpetaAct + "/Raton" + RatonPro + "/Rueda" + RuedaPro + ".txt";
 					Captura(FileName);	// Capturamos desde esa ruta
 					CarpetaAct = SiguienteCarpeta();	// Determinamos la siguiente carpeta
 				}
-				// Determinamos el destino de guardado seg√∫n el periodo
+				// Determinamos el destino de guardado seg˙n el periodo
 				Destino = CarpetaIni + '-' + CarpetaFin;
 				/*cout << endl
 					 << "     \250Convertir la actividad del rat\242n " << endl 
@@ -403,7 +417,7 @@ void TipoCaptura(int vez){		// Definimos el tipo de captura seg√∫n el par√°metro
 			}
 			break;
 		case 2:		// Varias carpetas desordenadas
-			// Ingresamos los datos para el an√°lisis
+			// Ingresamos los datos para el an·lisis
 			cout << "     Ingresa la cantidad de carpetas a procesar: ";
 			int cant;
 			cin >> cant;
@@ -412,7 +426,7 @@ void TipoCaptura(int vez){		// Definimos el tipo de captura seg√∫n el par√°metro
 			for (int i=0; i<cant; i++){
 				cout << "     Carpeta(" << i+1 << "/" << cant << "): ";
 				cin >> CarpetasDes[i];
-				// El nombre del destino tendr√° todos los nombres de las carpetas
+				// El nombre del destino tendr· todos los nombres de las carpetas
 				Destino += CarpetasDes[i];
 				if (i+1 < cant) Destino += ',';
 			}
@@ -424,11 +438,11 @@ void TipoCaptura(int vez){		// Definimos el tipo de captura seg√∫n el par√°metro
 				cout << "     N\243mero de rueda (" << i+1  << "/" << RatonesCant << ") a procesar: ";
 				cin >> Ruedas[i];
 			}
-			// Procesamos todas las carpetas por cada rat√≥n a analizar
+			// Procesamos todas las carpetas por cada ratÛn a analizar
 			for (int i=0; i<RatonesCant; i++){
-				DiaF = MesF = AnoF = 0;		// Neutralizamos los valores que ser√°n m√°ximos
-				DiaI = MesI = AnoI = 5000;	// Neutralizamos los valores que ser√°n m√≠nimos
-				RatonPro = Ratones[i];		// Definimos el rat√≥n a procesar
+				DiaF = MesF = AnoF = 0;		// Neutralizamos los valores que ser·n m·ximos
+				DiaI = MesI = AnoI = 5000;	// Neutralizamos los valores que ser·n mÌnimos
+				RatonPro = Ratones[i];		// Definimos el ratÛn a procesar
 				RuedaPro = Ruedas[i];		// Definimos la rueda a procesar
 				for (int j=0; j<cant; j++){		// Iteramos con cada carpeta
 					CarpetaAct = CarpetasDes[j];	// Actualizamos la carpeta actual con las carpetas ingresadas
@@ -491,7 +505,7 @@ void SobreElPrograma(){
 		 << "     cada l\241nea tiene cuatro atributos variables, y cada uno es:" << endl
 		 << "     1 -> Un n\243mero entero" << endl
 		 << "     08:00:00 -> Hora en reloj de 24hrs a dos d\241gitos por parte" << endl
-		 << "     03-17-2017 -> Fecha con formato Mes-D\241a-A√±o a 2, 2 y 4 d\241gitos" << endl
+		 << "     03-17-2017 -> Fecha con formato Mes-D\241a-AÒo a 2, 2 y 4 d\241gitos" << endl
 		 << "     100 -> Un n\243mero entero" << endl
 		 << endl
 		 << endl
@@ -505,12 +519,12 @@ void SobreElPrograma(){
 }
 
 int main(){
-	system("TITLE Activity wheel analyzer v0.1");
-	bool otro = true;		// Control de repetici√≥n al men√∫
-	char opc;				// Variable para pedir S/N
+	system("TITLE Activity wheel analyzer v0.2");
+	bool otro = true;		// Control de repeticiÛn al men˙
+	int opc;				// Variable para pedir S/N
 	while (otro){		// Mientras no se pida la salida
 		Inicializar();	// Inicializamos todos los arreglos
-		// Mensaje al usuario del men√∫
+		// Mensaje al usuario del men˙
 		cout << "     ------------------- Convertidor de conteos -------------------" << endl
 			 << endl
 			 << "                          Opciones de an\240lisis" << endl
@@ -521,27 +535,27 @@ int main(){
 			 << "     4- Salir del convertidor" << endl
 			 << endl
 			 << "     N\243mero de tu elecci\242n: ";
-		// Pedimos la opci√≥n que requiera
+		// Pedimos la opciÛn que requiera
 		cin >> opc;
 		// Identificamos la entrada
 		switch(opc){
-			case '1':	// Carpetas ordenadas
+			case 1:	// Carpetas ordenadas
 				TipoCaptura(1);
 				break;
-			case '2':	// Carpetas desordenadas
+			case 2:	// Carpetas desordenadas
 				TipoCaptura(2);
 				break;
-			case '3':
+			case 3:
 				SobreElPrograma();
 				break;
-			case '4':	// Salimos del programa
+			case 4:	// Salimos del programa
 				otro = false;
 				break;
-			default:	// No sirve de mucho pero marca entrada no v√°lida
+			default:	// No sirve de mucho pero marca entrada no v·lida
 				cout << "     Ingresa una opci\242n v\240lida" << endl;
 				break;
 		}
-		// Limpiamos la pantalla cada que hacemos un tipo de an√°lisis
+		// Limpiamos la pantalla cada que hacemos un tipo de an·lisis
 		system("cls");
 	}
 	// Fin del programa
