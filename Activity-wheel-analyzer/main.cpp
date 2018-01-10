@@ -213,7 +213,7 @@ void Conversion(bool todo){		// Convertimos los datos de la captura en la hora d
 
 	HoraCero = 8;		// Determinación de la hora 0 a convertir
 
-	NowD = DiaI, NowM = MesI, NowY = AnoF;	// Valor inicial de fecha a procesar
+	NowD = DiaI, NowM = MesI, NowY = AnoI;	// Valor inicial de fecha a procesar
 
 	sigue = true;
 	while (sigue){
@@ -265,7 +265,7 @@ void GuardarConteos(string carpeta){	// Guardamos los conteos
 	bool sigue;				// Control del ciclo
 	string aux, SigFecha,	// Auxiliar de cadena y temporal de siguiente fecha
 		   resp = CarpetaAct;	// Respaldo del valor de CarpetaAct
-	NowD = DiaI, NowM = MesI, NowY = AnoF;	// Valor inicial de fecha a procesar
+	NowD = DiaI, NowM = MesI, NowY = AnoI;	// Valor inicial de fecha a procesar
 	// Creación de archivo y definición de ruta
 	ofstream salida;
 	string ruta = "Convertidos";
@@ -387,7 +387,7 @@ void TipoCaptura(int vez){		// Definimos el tipo de captura según el parámetro '
 			}
 			// Por cada ratón se exploran todas las carpetas para usar una sola matriz de captura
 			for (int j=0; j<RatonesCant; j++){
-				CarpetaAct = CarpetaIni;	// Le primer carpeta será la inicial
+				CarpetaAct = CarpetaIni;	// La primer carpeta será la inicial
 				DiaF = MesF = AnoF = 0;		// Se neutralizan los valores que serán máximos
 				DiaI = MesI = AnoI = 5000;	// Se neutralizan los valores que serán mínimos
 				continua = true;	// Regulación del ciclo 
@@ -413,7 +413,7 @@ void TipoCaptura(int vez){		// Definimos el tipo de captura según el parámetro '
 				GuardarConvertidos(Destino);	// Guardamos en el destino los convertidos
 				GuardarConteos(Destino);		// Guardamos en el destino los conteos
 				MostrarConvertidos();			// Mostramos los convertidos
-				Inicializar();		// Reseteamos los conteos
+				Inicializar();					// Reseteamos los conteos
 			}
 			break;
 		case 2:		// Varias carpetas desordenadas
@@ -519,7 +519,7 @@ void SobreElPrograma(){
 }
 
 int main(){
-	system("TITLE Activity wheel analyzer v0.2");
+	system("TITLE Activity wheel analyzer v0.2.1");
 	bool otro = true;		// Control de repetición al menú
 	int opc;				// Variable para pedir S/N
 	while (otro){		// Mientras no se pida la salida
