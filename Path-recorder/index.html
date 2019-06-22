@@ -1,0 +1,76 @@
+<!--
+Code writen by rivel_co (Ricardo Velázquez Contreras)
+Original idea by rivel_co
+Further reference: github.com/Include-Poetry
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+
+	<title>Path recorder | Lab coding | #iP - Code</title>
+
+	<link rel="stylesheet" type="text/css" href="src/style.css">
+
+	<script src="src/jquery-3.2.1.min.js"></script>
+	<script src="src/Fabric.min.js"></script>
+	<script src="src/settings.js"></script>
+</head>
+<body>
+
+	<h1>Path recorder v0.01-alpha</h1>
+	<h2 id="current-title"></h2>
+
+	<div id="vid-holder">
+		<video id="vid" controls></video>
+	</div>
+
+    <canvas id="canvas"></canvas>
+
+	<div id="canvas-opt">
+		<div id="file-related" class="panel">
+			<label for="select-file">Select video</label><br>
+			<input id="selected-file" type="file" accept="video/mp4"><br>
+
+			<button id="download-canvas">Save path</button><br>
+
+			<label for="frf-value">Playback speed (factor)</label>
+			<input value="1" min="0.2" max="10" id="frf-value" type="text"><br>
+		</div>
+
+		<div id="meassure-related" class="panel">
+			<button id="set-reference" class="btn btn-info">Set reference</button><br>
+
+			<label id="LabelReference" for="reference-line">Equivalence (cm):</label>
+			<input value="1" min="0" max="150" id="reference-line" type="text"><br>
+
+			<button id="measure-length" class="btn btn-info">Measure</button><br>
+		</div>
+
+		<div id="drawing-mode-options" class="panel">
+			<label for="drawing-line-width">Line width:</label>
+			<input value="1" min="1" max="150" id="drawing-line-width" type="text"><br>
+
+			<label for="drawing-color">Line color:</label>
+			<input value="#000000" id="drawing-color" type="color"><br>
+
+			<button id="clear-canvas" class="btn btn-info">Clear</button><br>
+		</div>
+
+		<div id="log-container" class="panel">
+			<span>Log</span>
+			<p id="meassuresLog"></p>
+		</div>
+	</div>
+
+	<div id="tempContainer"></div>
+
+	<div id="svgContainer"></div>
+
+	
+
+	<footer>Original idea and code by <a href="https://github.com/Include-Poetry" target="_blank">rivel_co</a></footer>
+
+</body>
+</html>

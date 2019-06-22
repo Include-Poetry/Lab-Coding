@@ -1,0 +1,83 @@
+/*
+Code writen by rivel_co (Ricardo Velázquez Contreras)
+Original idea by rivel_co
+Further reference: github.com/Include-Poetry
+*/
+
+html, body{
+	background-color: #131313;
+	background-attachment: fixed;
+	background-position: top;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	color: #ccc;
+}
+
+h1, h2{
+	color: #ccc;
+	text-align: center;
+}
+
+#vid-holder{
+	margin-left: calc((100% - 853px)/2);
+	background-position: center;
+	position: absolute;
+	width: 853px;
+	height: 440px;
+}
+
+#canvas{
+	width: 720px;
+	height: 480px;
+	border: 1px solid #000000;
+	margin-left: calc((100% - 853px)/2);
+}
+
+.canvas-container{
+	margin-left: calc((100% - 840px)/2);
+}
+
+#tempContainer{
+	display: none;
+}
+
+.panel{
+	display: inline-grid;
+	margin-right: 50px;
+}
+
+#log-container{
+	width: 350px;
+	height: 100px;
+	margin: 0;
+}
+
+#log-container span{
+	margin: 0px;
+	height: 20px;
+}
+
+#meassuresLog{
+	width: 100%;
+	margin-top: 6px;
+	background: #ccc;
+	color: #000;
+	height: 100px;
+	overflow: auto;
+	display: block;
+}
+
+#canvas-opt{
+    display: inline-block;
+    margin-left: calc((100% - 1054px)/2);
+    margin-top: 80px;
+	margin-bottom: 80px;
+}
+
+footer{
+	text-align: center;
+}
+
+footer a{
+	color: #fff;
+}
