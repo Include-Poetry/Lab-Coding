@@ -46,6 +46,12 @@ Para una buena medición es recomendable mantener un *error* constante, realizar
 
 También recomiendo que antes de guardar el dibujo vectorial y después de obtener la distancia total, se marque con algún color único y distintivo la referencia, para que si después ese dibujo se procesa de otra forma sea sencillo llevar la referencia consigo. 
 
+## Cómo citar este programa
+
+Si utilizas este programa exitosamente en tu investigación, por favor cítalo utilizando el formato:
+
+> Velázquez R. (2019). Path recorder (v0.1-alpha) [Computer software]. Retrieved from https://github.com/Include-Poetry/Lab-Coding/tree/master/Path-recorder
+
 ## Créditos
 
 Esta herramienta y su idea principal tiene como autor a Ricardo Velázquez Contreras y fue desarrollado para el **Laboratorio de Neurobiología de la Conducta y Cognición** de la **Facultad de Medicina, UASLP**.

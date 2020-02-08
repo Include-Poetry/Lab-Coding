@@ -30,3 +30,9 @@ Las primeras cuatro líneas no tienen ningún espacio (` `) A partir de quinta l
 `08:00:00` -> Hora en reloj de 24 horas a dos dígitos por parte
 `03-17-2017` -> Fecha con formato Mes-Día-Año a 2, 2 y 4 dígitos
 `100` -> Un número entero
+
+## Cómo citar este programa
+
+Si utilizas este programa exitosamente en tu investigación, por favor cítalo utilizando el formato:
+
+> Velázquez R. (2018). Activity wheel analyzer (v0.2.1) [Computer software]. Retrieved from https://github.com/Include-Poetry/Lab-Coding/tree/master/Activity-wheel-analyzer

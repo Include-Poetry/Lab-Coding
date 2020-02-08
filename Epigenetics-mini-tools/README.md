@@ -44,6 +44,13 @@ Dada una secuencia de nucleótidos la función devuelve todos los posibles oligo
 
 Al finalizar puedes guardar los resultados de la búsqueda en un archivo de texto que se genera en la misma carpeta de donde se ejecutó el programa. No se recomiendan cadenas con más de 4000 caracteres en esta versión, por las limitaciones nativas en la entrada por la consola de Windows.
 
+## Cómo citar este programa
+
+Si utilizas este programa exitosamente en tu investigación, por favor cítalo utilizando el formato:
+
+> Velázquez R. (2017). Epigenetics mini-tools (v0.1) [Computer software]. Retrieved from https://github.com/Include-Poetry/Lab-Coding/tree/master/Epigenetics-mini-tools
+
+
 > Elaborada por mero amor al arte.
 
 > *¿Quieres aprender a desarrollar herramientas como esta?* No hay momento como ahora, comienza a aprender en [Include Poetry división informática](https://www.include-poetry.com/Code/ "Include Poetry"), sitio realizado por el mismo autor de este programa.
